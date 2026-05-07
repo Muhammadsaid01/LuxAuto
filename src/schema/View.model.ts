@@ -1,7 +1,7 @@
 import { ViewGroup } from 'libs/enums/view.enum';
-import { Schema } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
-const ViewSchema = new Schema({
+const viewSchema = new Schema({
 		viewGroup: {
 		type: String,
 		enum: ViewGroup,
@@ -22,3 +22,5 @@ const ViewSchema = new Schema({
 	// Define your schema fields here
 }, {timestamps: true} // createdAt, updatedAt
 );
+
+export default mongoose.model( "View", viewSchema );

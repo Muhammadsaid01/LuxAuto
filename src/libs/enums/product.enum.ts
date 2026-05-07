@@ -22,7 +22,7 @@ export enum ProductCategory {
 	OTHER = 'OTHER',
 }
 
-export enum ProductType {
+export enum ProductCollection {
 	SEDAN = 'SEDAN',
 	SUV = 'SUV',
 	TRUCK = 'TRUCK',

@@ -1,4 +1,4 @@
-import { ProductCategory, ProductCondition, ProductEngineType, ProductStatus, ProductType } from 'libs/enums/product.enum';
+import { ProductCategory, ProductCollection, ProductCondition, ProductEngineType, ProductStatus } from 'libs/enums/product.enum';
 import mongoose, { Schema } from 'mongoose';
 
 const productSchema = new Schema({
@@ -35,10 +35,10 @@ const productSchema = new Schema({
 		default: ProductEngineType.SINGLE,
 	},
 
-	productType:{
+	productCollection:{
 		type: String,
-		enum: ProductType,
-		default: ProductType.SEDAN,
+		enum: ProductCollection,
+		required: true,
 	},
 
 
@@ -48,8 +48,8 @@ const productSchema = new Schema({
 		required: true,
 	},
 
-	productImage: {
-		type: String,
+	productImages: {
+		type: [String],
 		default: [],
 	},
 
