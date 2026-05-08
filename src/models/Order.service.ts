@@ -6,7 +6,7 @@ import { Member } from '../libs/types/member';
 import { Order, OrderInquiry, OrderItemInput, OrderUpdateInput } from '../libs/types/order';
 import OrderModel from "../schema/Order.model";
 import OrderItemModel from '../schema/OrderItem.model';
-import MemberService from './member.service';
+import MemberService from './Member.service';
 
 class OrderService {
 	private readonly orderModel;

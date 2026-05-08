@@ -4,7 +4,7 @@ import Errors, { HttpCode, Message } from "../libs/Errors";
 import { T } from "../libs/types/common";
 import { ExtendedRequest, LoginInput, MemberInput, MemberUpdateInput } from "../libs/types/member";
 import AuthService from "../models/Auth.service";
-import MemberService from "../models/member.service";
+import MemberService from "../models/Member.service";
 
 // for REACT
 const memberController: T = {};
