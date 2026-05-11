@@ -3,7 +3,7 @@ import Errors, { HttpCode, Message } from '../libs/Errors';
 import { MemberType } from '../libs/enums/Member.enum';
 import { T } from '../libs/types/common';
 import { AdminRequest, LoginInput } from '../libs/types/member';
-import MemberService from '../models/member.service';
+import MemberService from '../models/Member.service';
 const memberService = new MemberService();
 // HomePage
 const dealershipController: T = {};
@@ -82,6 +82,18 @@ dealershipController.processLogin = async (req: AdminRequest, res:Response) => {
         const message =
          err instanceof Errors ? err.message : Message.SOMETHING_WENT_WRONG;
          res.send(`<script>alert('${message}'); window.location.replace('/admin/login');</script>`);
+    }  
+};
+dealershipController.logout = async (req: AdminRequest, res:Response) => {
+    try {
+        console.log("logout");
+       req.session.destroy(function(){
+        res.redirect('/admin');   
+
+       });
+    } catch (err){
+        console.log("Error logout:" ,err);
+        res.redirect('/admin'); 
     }  
 };
 

@@ -1,0 +1,135 @@
+/* Animatsiya orqa fonda ishlashi uchun body qismi */
+body {
+  margin: 0;
+  padding: 0;
+  background: radial-gradient(ellipse at center, #1b2735 0%, #090a0f 100%);
+  overflow-x: hidden;
+}
+
+/* Three.js canvas (home.js yaratadigan element) */
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1; /* Fondagi qavat */
+}
+
+.users-container {
+  position: relative;
+  z-index: 10; /* Animatsiyadan yuqori qavatda */
+  width: auto;
+  height: auto;
+  min-width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Backgroundni shaffof qilamiz yoki biroz qoraytiramiz */
+  background: rgba(0, 0, 0, 0.2); 
+}
+
+.users-container a {
+  text-decoration: none;
+  color: #ffffff; /* Shrift rangi endi oq */
+}
+
+.users-container .nav-item a {
+  color: #e3c08d; /* Navigatsiya rangi tillarang */
+  transition: 0.3s;
+}
+
+.users-container .nav-item a:hover {
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(227, 192, 141, 0.5);
+}
+
+.users-container .navigation-menu {
+  position: absolute;
+  z-index: 10000;
+  top: 1%;
+  color: #efefee;
+  font-size: 40px;
+  font-family: monospace;
+}
+
+.users-container .users-frame {
+  position: relative;
+  padding-bottom: 80px;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.users-container .users-frame .board {
+  position: relative;
+  margin-top: 100px;
+  width: 1320px;
+  max-width: 95%; /* Kichik ekranlar uchun */
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Jadval orqasi biroz ko'rinib turishi uchun qoraytirilgan fon */
+  background: rgba(17, 3, 3, 0.6); 
+  padding: 30px;
+  border-radius: 20px;
+  backdrop-filter: blur(5px); /* Orqa fonni xiralashtirish effekti */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.users-container .board .user-table {
+  position: relative;
+  width: 95%; /* Kengroq qildik */
+  height: auto;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.users-container .header-name {
+  font-family: "Source Serif Pro";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 35px; /* Biroz kattalashtirildi */
+  line-height: 25px;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+/* Jadval ichidagi qatorlar (tbody) uchun */
+.users-container table tbody {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: white;
+}
+
+.users-container table thead th {
+    background-color: rgba(227, 192, 141, 0.2);
+    color: #e3c08d;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.users-container select {
+    cursor: pointer;
+}
+
+.users-container .spec-select {
+  position: relative;
+  padding: 0px 7px;
+  height: 27px;
+  background: #ffffff;
+  border: 1px solid #dddddd;
+  border-radius: 8px;
+  font-family: "GT Walsheim Pro";
+  color: #4f547b;
+}
+
+.users-container table td,
+.users-container table th {
+  text-align: center;
+  vertical-align: middle;
+  padding: 12px;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}

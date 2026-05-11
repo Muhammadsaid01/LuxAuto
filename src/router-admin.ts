@@ -7,7 +7,7 @@ const routerAdmin = express.Router();
 /** Restaurant Routes */
 
 // Home Route
-routerAdmin.get('/', dealershipController.goHome);
+routerAdmin.get('/', dealershipController.getHomePage);
 
 // Signup Route
 routerAdmin

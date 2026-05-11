@@ -1,9 +1,9 @@
 import bcrypt from 'bcryptjs';
-import { shapeIntoMongooseObjectId } from 'libs/config';
-import { MemberStatus, MemberType } from 'libs/enums/Member.enum';
-import Errors, { HttpCode, Message } from 'libs/Errors';
-import { LoginInput, Member, MemberInput, MemberUpdateInput } from 'libs/types/member';
-import MemberModel from 'schema/Member.model';
+import { shapeIntoMongooseObjectId } from '../libs/config';
+import { MemberStatus, MemberType } from '../libs/enums/Member.enum';
+import Errors, { HttpCode, Message } from '../libs/Errors';
+import { LoginInput, Member, MemberInput, MemberUpdateInput } from '../libs/types/member';
+import MemberModel from '../schema/Member.model';
 
 
 

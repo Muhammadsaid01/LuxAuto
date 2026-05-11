@@ -1,0 +1,44 @@
+/* Animatsiya orqa fonda turishi uchun */
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1; /* Fon sifatida */
+}
+
+.home-container {
+  position: relative;
+  z-index: 2; /* Menyu animatsiyadan tepada bo'lishi kerak */
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Navigatsiya menyusi shriftlarini OQ qilish */
+.home-container .navigation-menu {
+  margin-top: 20px;
+  font-family: monospace;
+}
+
+.home-container .nav-item a {
+  color: #ffffff !important; /* Shrift rangi OQ */
+  font-size: 24px;
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 10px 20px;
+  transition: all 0.3s ease;
+}
+
+.home-container .nav-item a:hover {
+  color: #00d4ff !important; /* Sichqoncha borganda rang o'zgarishi (ixtiyoriy) */
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Fon gradienti (Animatsiya orqasida chiroyli ko'rinadi) */
+body {
+  margin: 0;
+  overflow-x: hidden;
+  background: radial-gradient(ellipse at center, #2a88f3 0%, #0568d9 100%);
+}

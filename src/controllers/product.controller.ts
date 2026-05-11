@@ -43,8 +43,8 @@ const productController: T = {};
 			console.log("getProduct  ");
 			const { id } = req.params;
 			
-			const memberId = req.member?._id ?? null,
-			result = await productService.getProduct(memberId, id as string);
+			const memberId = req.member?._id ?? null;
+			const result = await productService.getProduct(memberId, id as string);
 
 		res.status(HttpCode.OK).json(result);
 	}catch(err){

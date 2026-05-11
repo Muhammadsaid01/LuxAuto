@@ -1,5 +1,5 @@
-import { ProductCategory, ProductCollection, ProductCondition, ProductEngineType, ProductStatus } from 'libs/enums/product.enum';
 import mongoose, { Schema } from 'mongoose';
+import { ProductCategory, ProductCollection, ProductCondition, ProductEngineType, ProductStatus } from '../libs/enums/product.enum';
 
 const productSchema = new Schema({
 	productStatus: {

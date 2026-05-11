@@ -1,0 +1,88 @@
+<%- include('includes/header') %>
+
+	<link rel="stylesheet" type="text/css" href="/css/users.css" />
+
+	<!-- ANIMATSIYA UCHUN ZARURIY KUTUBXONALAR (Home'da ishlatilgani bilan bir xil) -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r68/three.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js"></script>
+
+	<body>
+		<div class="users-container">
+			<% if(!member) { %>
+				<!-- Navigatsiya va login xabari -->
+				<div class="navigation-menu">
+					<ul class="nav justify-content-center">
+						<li class="nav-item"><a class="nav-link active" href="/admin/">Home</a></li>
+						<li class="nav-item"><a class="nav-link" href="/admin/signup">SignUp</a></li>
+						<li class="nav-item"><a class="nav-link" href="/admin/login">Login</a></li>
+					</ul>
+				</div>
+
+				<div class="users-frame" style="color: #ffffff">
+					<div class="board" style="font-size: 40px">Please login first!</div>
+				</div>
+
+				<% } else { %>
+					<!-- Admin menyusi -->
+					<div class="navigation-menu">
+						<ul class="nav justify-content-center">
+							<li class="nav-item"><a class="nav-link active" href="/admin/">Home</a></li>
+							<li class="nav-item"><a class="nav-link" href="/admin/product/all">Menu</a></li>
+							<li class="nav-item"><a class="nav-link" href="/admin/user/all">Users</a></li>
+							<li class="nav-item" onclick="return confirm('Do you really want to logout?')">
+								<a class="nav-link" href="/admin/logout">Logout</a>
+							</li>
+						</ul>
+					</div>
+
+					<div class="users-frame">
+						<div class="board">
+							<div class="user-table">
+								<span class="header-name" style="margin-bottom: 30px; color: white;">All Users List</span>
+								<table class="table table-hover table-sm">
+									<thead class="thead-light">
+										<tr>
+											<th scope="col">No</th>
+											<th scope="col">Name</th>
+											<th scope="col">Phone</th>
+											<th scope="col">Status</th>
+										</tr>
+									</thead>
+									<% users.map(function(value, index) { %>
+										<tbody style="background: rgba(255, 255, 255, 0.8)"> <!-- Shaffofroq qildik -->
+											<tr>
+												<td>
+													<%= index + 1 %>
+												</td>
+												<td>
+													<%= value.memberNick %>
+												</td>
+												<td>
+													<%= value.memberPhone %>
+												</td>
+												<td>
+													<select class="spec-select member-status" id="<%= value._id%>">
+														<option value="ACTIVE" <%=value.memberStatus==='ACTIVE' ? 'selected' : '' %>>ACTIVE</option>
+														<option value="BLOCK" <%=value.memberStatus==='BLOCK' ? 'selected' : '' %>>BLOCK</option>
+														<option value="DELETE" <%=value.memberStatus==='DELETE' ? 'selected' : '' %>>DELETE</option>
+													</select>
+												</td>
+											</tr>
+										</tbody>
+										<% }) %>
+								</table>
+							</div>
+						</div>
+					</div>
+					<% } %>
+		</div>
+
+		<!-- ANIMATSIYA SCRIPTINI CHARQIRISH -->
+		<!-- Diqqat: Agarda animatsiya kodi home.js ichida bo'lsa, uni alohida animation.js qilib oling 
+       yoki shunchaki pastdagi users.js dan oldin home.js ni ham chaqiring -->
+		<script type="text/javascript" src="/js/home.js"></script>
+		<script type="text/javascript" src="/js/users.js"></script>
+	</body>
+
+	<%- include('includes/footer') %>
