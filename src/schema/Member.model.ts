@@ -5,14 +5,14 @@ const memberSchema = new Schema({
     memberType:{
         type: String,
         enum: MemberType,
-        default: MemberType.USER
+        default: MemberType.USER,
        
     },
 
     memberStatus:{
         type: String,
         enum: MemberStatus,
-        default: MemberStatus.ACTIVE
+        default: MemberStatus.ACTIVE,
     },
 
     memberNick:{

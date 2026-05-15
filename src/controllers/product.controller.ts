@@ -74,6 +74,7 @@ productController.getAllProducts = async (req:Request, res:Response)=> {
 
 productController.createNewProduct = async (req:AdminRequest, res:Response)=> {
 	try{
+		console.log("BODY =>", req.body);
 		console.log("Create New Products");
 		console.log("req.file:", req.files);
 

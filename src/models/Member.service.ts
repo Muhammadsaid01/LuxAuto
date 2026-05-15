@@ -17,19 +17,18 @@ class MemberService {
 /** BSSR */
  public async processSignup(input: MemberInput): Promise<Member> {
     const exist = await this.memberModel
-      .findOne({ memberType: 	MemberType.ADMIN, memberNick: input.memberNick })
+      .findOne({ memberType: MemberType.ADMIN })
       .exec();
+
     if (exist) throw new Errors(HttpCode.BAD_REQUEST, Message.CREATED_FAILED);
 
-    //* Password hashing
     const salt = await bcrypt.genSalt();
     input.memberPassword = await bcrypt.hash(input.memberPassword, salt);
 
     try {
       const result = await this.memberModel.create(input);
-      result.memberPassword = ""; //@ts-ignore
-
-      return result;
+      result.memberPassword = "";
+      return result.toObject()  as Member;
     } catch (err) {
       throw new Errors(HttpCode.BAD_REQUEST, Message.CREATED_FAILED);
     }

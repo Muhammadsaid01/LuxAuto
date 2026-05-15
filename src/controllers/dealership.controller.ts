@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import Errors, { HttpCode, Message } from '../libs/Errors';
 import { MemberType } from '../libs/enums/Member.enum';
 import { T } from '../libs/types/common';
-import { AdminRequest, LoginInput } from '../libs/types/member';
+import { AdminRequest, LoginInput, MemberInput } from '../libs/types/member';
 import MemberService from '../models/Member.service';
 const memberService = new MemberService();
 // HomePage
@@ -21,8 +21,10 @@ dealershipController.getHomePage = (req: Request , res: Response) => {
 //Signup
 dealershipController.getSignup = (req: Request , res: Response) => {
 	 try {
+        console.log(req.body);
+        console.log(req.file);
 		console.log("signup page");
-		res.render("signup");
+		res.render("log-up");
 	 }catch (err) {
 		console.log("Error in getSignup: ", err);
 		res.redirect("/admin");
@@ -32,7 +34,7 @@ dealershipController.getSignup = (req: Request , res: Response) => {
 //Login 
 dealershipController.getLogin = (req: Request, res:Response) => {
     try {
-     res.render("login");
+     res.render("log-up");
     } catch (err){
         console.log("Error getLogin:" ,err);
           res.redirect('/admin'); 
@@ -40,27 +42,30 @@ dealershipController.getLogin = (req: Request, res:Response) => {
 };
 
 
-dealershipController.processSignup = async (req: Request , res: Response) => {
-	 try {
-		console.log("process signup");
-		const file = req.file;
-		if(!file) 
-			throw new Errors(HttpCode.BAD_REQUEST, Message.CREATED_FAILED);
-		const newMember =  req.body;
-		newMember.MemberImage = file?.path.replace(/\\/g, "/");
-		newMember.memberType = MemberType.ADMIN;
-		const result = await memberService.processSignup(newMember);
-		// res.session.member = result;
-		// res.session.save(function() {
-		// 	res.redirect("/admin/product/all");
-		// });
-		res.send(`<script>alert("회원가입이 완료되었습니다."); window.location.href="/admin/product/all";</script>`);
-	 }catch (err) {
-		console.log("Error in processSignup: ", err);
-		const message = err instanceof Errors ? err.message : Message.SOMETHING_WENT_WRONG;
-		res.send(`<script>alert("${message}"); window.location.href="/admin/signup";</script>`);
+dealershipController.processSignup =  async(req: AdminRequest, res: Response) => {
+  try {
+    console.log("processSignUp");
+    console.log("req.body:", req.body);
+    const file = req.file;
+   if (!file) throw new Errors (HttpCode.BAD_REQUEST, Message.SOMETHING_WENT_WRONG);
+ ;
 
-	 }
+    const newMember: MemberInput = req.body;
+    newMember.memberImage = file?.path.replace(/\\/g,"/");
+    newMember.memberType = MemberType.ADMIN;
+    const memberService = new MemberService();
+     const result =   await memberService.processSignup(newMember);
+
+ req.session.member = result ;
+ req.session.save(function() {
+  res.redirect("/admin/product/all");
+ });
+  } catch (err) {
+    console.log("Error, processSignUp:", err);
+    const message =
+      err instanceof Errors ? err.message : Message.SOMETHING_WENT_WRONG;
+    res.send(`<script>alert("${message}"); window.location.replace('/admin/signup');</script>`);
+  }
 };
 
 // Process Login

@@ -1,5 +1,6 @@
 
 export enum ProductStatus {
+	PAUSE = 'PAUSE',
 	ACTIVE = 'ACTIVE',
 	SOLD = 'SOLD',
 	DELETE = 'DELETE',
@@ -16,7 +17,7 @@ export enum ProductCondition {
 export enum ProductCategory {
 	GASOLINE = 'GASOLINE',
 	DIESEL = 'DIESEL',
-	HYBRID = 'HYBRID',
+	LPG = 'LPG',
 	ELECTRIC = 'ELECTRIC',
 	KERASENE = 'KERASENE',
 	OTHER = 'OTHER',
@@ -33,8 +34,4 @@ export enum ProductCollection {
 	SPORT_CAR = 'SPORTS_CAR',
 	OTHER = 'OTHER',
 }
- export enum ProductEngineType {
-	SINGLE = 'SINGLE',
-	DOUBLE = 'DOUBLE',
-	OTHER = 'OTHER',
-}
+

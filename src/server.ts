@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import mongoose from "mongoose";
 import app from "./app";
 dotenv.config();
-
+mongoose.set("strictQuery", true);
  mongoose.connect(process.env.MONGO_URL as string, {})
  .then((data) => {
     console.log("MonggoDB connection succeed");

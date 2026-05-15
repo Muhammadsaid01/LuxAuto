@@ -5,10 +5,10 @@ import { ViewGroup } from '../libs/enums/view.enum';
 import Errors, { HttpCode, Message } from "../libs/Errors";
 import { T } from '../libs/types/common';
 import {
-	Product,
-	ProductInput,
-	ProductInquery,
-	ProductUpdateInput
+  Product,
+  ProductInput,
+  ProductInquery,
+  ProductUpdateInput
 } from "../libs/types/product";
 import { ViewInput } from '../libs/types/view';
 import ProductModel from "../schema/Product.model";
@@ -93,8 +93,9 @@ class ProductService {
 
   public async createNewProduct(input: ProductInput): Promise<Product> {
     try {
-			//@ts-ignore
-      return await this.productModel.create(input);
+			
+      const result = await this.productModel.create(input);
+      return result.toObject()  as Product;
     } catch (err) {
       console.error("Error, model:createNewProduct:", err);
       throw new Errors(HttpCode.BAD_REQUEST, Message.CREATED_FAILED);

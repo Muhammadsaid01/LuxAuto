@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { ProductCategory, ProductCollection, ProductCondition, ProductEngineType, ProductStatus } from '../libs/enums/product.enum';
+import { ProductCategory, ProductCollection, ProductCondition, ProductStatus } from '../libs/enums/product.enum';
 
 const productSchema = new Schema({
 	productStatus: {
@@ -28,21 +28,12 @@ const productSchema = new Schema({
 		type: String,
 		enum: ProductCondition,
 		default: ProductCondition.NEW,
-	},
-	productEngine: {
-		type: String,
-		enum: ProductEngineType,
-		default: ProductEngineType.SINGLE,
-	},
-
+	}, 
 	productCollection:{
 		type: String,
 		enum: ProductCollection,
 		required: true,
 	},
-
-
-
 	productDesc: {
 		type: String,
 		required: true,

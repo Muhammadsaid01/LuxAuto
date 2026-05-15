@@ -20,8 +20,8 @@ export interface Member {
 
 export interface MemberInput {
 
-    memberType?: MemberType;
-    memberStatus?: MemberStatus;
+    memberType: MemberType;
+    memberStatus: MemberStatus;
     memberNick: string;
     memberPhone: string;
     memberPassword: string;

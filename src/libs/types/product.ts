@@ -1,22 +1,20 @@
-import { ObjectId } from "mongoose";
+import { ObjectId, Types } from "mongoose";
 
 import {
-	ProductCategory,
-	ProductCollection,
-	ProductCondition,
-	ProductEngineType,
-	ProductStatus,
+  ProductCategory,
+  ProductCollection,
+  ProductCondition,
+  ProductStatus,
 } from "../enums/product.enum";
 
 export interface Product {
-  _id: ObjectId;
+  _id: Types.ObjectId;
   productStatus: ProductStatus;
   productCollection: ProductCollection;
   productName: string;
   productPrice: number;
   productCategory: ProductCategory;
   productCondition: ProductCondition;
-  productEngine: ProductEngineType;
 	productYear: number;
 	productMileage: number;
   productDesc?: string;
@@ -43,7 +41,6 @@ export interface ProductInput {
   productMileage: number;
 	productCategory?: ProductCategory;
   productCondition?: ProductCondition;
-  productEngine?: ProductEngineType;
   productDesc?: string;
   productImages?: string[];
   productViews?: number;
@@ -59,7 +56,6 @@ export interface ProductUpdateInput {
   productYear?: number;
   productMileage?: number;
   productCondition?: ProductCondition;
-  productEngine?: ProductEngineType;
   productDesc?: string;
   productImages?: string[];
   productViews?: number;
