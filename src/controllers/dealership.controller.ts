@@ -24,7 +24,7 @@ dealershipController.getSignup = (req: Request , res: Response) => {
         console.log(req.body);
         console.log(req.file);
 		console.log("signup page");
-		res.render("log-up");
+		res.render("signup");
 	 }catch (err) {
 		console.log("Error in getSignup: ", err);
 		res.redirect("/admin");
@@ -34,7 +34,7 @@ dealershipController.getSignup = (req: Request , res: Response) => {
 //Login 
 dealershipController.getLogin = (req: Request, res:Response) => {
     try {
-     res.render("log-up");
+     res.render("login");
     } catch (err){
         console.log("Error getLogin:" ,err);
           res.redirect('/admin'); 

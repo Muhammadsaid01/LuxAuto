@@ -46,7 +46,6 @@ export interface MemberUpdateInput {
     memberAddress?: string;
     memberDesc?: string;
     memberImage?: string;
-
 }
 export interface ExtendedRequest extends Request {
     member: Member;

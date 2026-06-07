@@ -1,101 +1,215 @@
-/* --- ASOSIY KONTEYNER VA UMUMIY USLUBLAR --- */
-.container {
-    background-color: #fff;
-    border-radius: 30px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
-    position: relative;
-    overflow: hidden;
-    width: 768px;
-    max-width: 100%;
-    min-height: 550px; /* Ichki elementlar sig'ishi uchun */
+/* ===== BODY ===== */
+
+/* Navigatsiya menyusi shriftlarini OQ qilish */
+.navigation-menu {
+  margin-top: 20px;
+  font-family: monospace;
 }
 
-/* Tugmalarni yashirish (Toggle paneldagi) */
-.container button.hidden {
-    background-color: transparent;
-    border-color: #fff;
+.navigation-menu .nav-item a {
+  color: #ffffff !important; /* Shrift rangi OQ */
+  font-size: 24px;
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 10px 20px;
+  transition: all 0.3s ease;
 }
 
-/* --- TOGGLE PANEL (ALMASHISH MEXANIZMI) --- */
-.toggle-container {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 50%;
-    height: 100%;
-    overflow: hidden;
-    transition: all 0.6s ease-in-out;
-    border-radius: 150px 0 0 100px;
-    z-index: 1000;
+.navigation-menu .nav-item a:hover {
+  color: #00d4ff !important; /* Sichqoncha borganda rang o'zgarishi (ixtiyoriy) */
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
-/* Konteyner "active" bo'lganda toggle panel chapga suriladi */
-.container.active .toggle-container {
-    transform: translateX(-100%);
-    border-radius: 0 150px 100px 0;
+body {
+	margin: 0;
+	padding: 0;
+	font-family: 'Poppins', sans-serif;
+	background: radial-gradient(circle at bottom, #0d1b52 0%, #020617 45%, #000 100%);
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
 }
 
-.toggle {
-    background-color: #512da8;
-    background: linear-gradient(to right, #5c6bc0, #512da8);
-    color: #fff;
-    position: relative;
-    left: -100%;
-    height: 100%;
-    width: 200%;
-    transform: translateX(0);
-    transition: all 0.6s ease-in-out;
+/* ===== MAIN LOGIN CARD ===== */
+
+.form-container.sign-in {
+	width: 420px;
+	position: relative;
 }
 
-.container.active .toggle {
-    transform: translateX(50%);
+.login-container {
+	width: 100%;
+	padding: 55px 40px;
+
+	background: rgba(12, 12, 12, 0.75);
+
+	backdrop-filter: blur(18px);
+
+	border: 1px solid rgba(255, 255, 255, 0.08);
+
+	border-radius: 28px;
+
+	box-shadow:
+		0 0 40px rgba(37, 99, 235, 0.25),
+		0 0 120px rgba(37, 99, 235, 0.12);
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
-.toggle-panel {
-    position: absolute;
-    width: 50%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 0 30px;
-    text-align: center;
-    top: 0;
-    transform: translateX(0);
-    transition: all 0.6s ease-in-out;
+/* ===== TITLE ===== */
+
+.login-container h1 {
+	font-size: 52px;
+	font-weight: 600;
+	color: white;
+	margin: 0 0 12px;
+	letter-spacing: -1px;
 }
 
-/* Chap panel (Sign In ga qaytish uchun) */
-.toggle-left {
-    transform: translateX(-200%);
+/* ===== SUBTITLE ===== */
+
+.login-container span {
+	font-size: 13px;
+	color: rgba(255, 255, 255, 0.55);
+	text-align: center;
+	line-height: 1.7;
+	margin-bottom: 35px;
+	max-width: 300px;
 }
 
-.container.active .toggle-left {
-    transform: translateX(0);
+/* ===== INPUTS ===== */
+
+.member-nick,
+.member-password {
+	width: 100%;
+	height: 55px;
+
+	background: rgba(255, 255, 255, 0.03);
+
+	border: 1px solid rgba(255, 255, 255, 0.08);
+
+	border-radius: 40px;
+
+	padding: 0 22px;
+
+	color: white;
+	font-size: 14px;
+
+	outline: none;
+
+	margin-bottom: 16px;
+
+	transition: all 0.3s ease;
+	box-sizing: border-box;
 }
 
-/* O'ng panel (Sign Up ga o'tish uchun) */
-.toggle-right {
-    right: 0;
-    transform: translateX(0);
+.member-nick::placeholder,
+.member-password::placeholder {
+	color: rgba(255, 255, 255, 0.35);
 }
 
-.container.active .toggle-right {
-    transform: translateX(200%);
+.member-nick:focus,
+.member-password:focus {
+	border-color: #2563eb;
+
+	box-shadow:
+		0 0 15px rgba(37, 99, 235, 0.35);
+
+	background: rgba(255, 255, 255, 0.05);
 }
 
-/* Toggle panel ichidagi matnlar */
-.toggle-panel h1 {
-    font-size: 24px;
-    color: #fff;
-    margin-bottom: 10px;
+/* ===== FORGET PASSWORD ===== */
+
+.login-container a {
+	color: rgba(255, 255, 255, 0.6);
+	font-size: 13px;
+	text-decoration: none;
+	margin: 8px 0 25px;
+	transition: 0.3s;
 }
 
-.toggle-panel p {
-    font-size: 14px;
-    line-height: 20px;
-    letter-spacing: 0.3px;
-    margin: 20px 0;
-    color: #fff;
+.login-container a:hover {
+	color: #3b82f6;
+}
+
+/* ===== LOGIN BUTTON ===== */
+
+.login-btn {
+	width: 100%;
+	height: 55px;
+
+	border: none;
+	border-radius: 40px;
+
+	background: linear-gradient(to right, #171717, #232323);
+
+	color: white;
+	font-size: 16px;
+	font-weight: 600;
+
+	cursor: pointer;
+
+	transition: all 0.3s ease;
+
+	margin-bottom: 25px;
+}
+
+.login-btn:hover {
+	transform: translateY(-2px);
+
+	background: linear-gradient(to right, #2563eb, #1d4ed8);
+
+	box-shadow:
+		0 10px 25px rgba(37, 99, 235, 0.35);
+}
+
+/* ===== SOCIAL ICONS ===== */
+
+.social-icons {
+	width: 100%;
+	display: flex;
+	gap: 10px;
+	margin-bottom: 25px;
+}
+
+.social-icons .icon {
+	flex: 1;
+	height: 45px;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	border-radius: 30px;
+
+	background: rgba(255, 255, 255, 0.03);
+
+	border: 1px solid rgba(255, 255, 255, 0.06);
+
+	color: rgba(255, 255, 255, 0.8);
+
+	text-decoration: none;
+
+	transition: 0.3s;
+}
+
+.social-icons .icon:hover {
+	background: #2563eb;
+	transform: translateY(-2px);
+}
+
+/* ===== EXTRA TEXT ===== */
+
+.signup-text {
+	font-size: 13px;
+	color: rgba(255,255,255,0.45);
+}
+
+.signup-text b {
+	color: #3b82f6;
+	cursor: pointer;
 }

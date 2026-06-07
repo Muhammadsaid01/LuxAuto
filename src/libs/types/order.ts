@@ -27,7 +27,7 @@ export interface Order {
 }   
 
 export interface OrderItemInput {
-	itemQuentity: Number;
+	itemQuantity: Number;
 	itemPrice: Number;
 	productId: ObjectId;
 	orderId?:ObjectId;
@@ -41,5 +41,5 @@ export interface OrderInquiry {
 
 export interface OrderUpdateInput {
 	orderId: string;
-	orderStatus​​: OrderStatus;
+	orderStatus: OrderStatus;
 }

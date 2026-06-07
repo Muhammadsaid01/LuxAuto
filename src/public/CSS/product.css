@@ -1,4 +1,3 @@
-/* Animatsiya orqa fonda turishi uchun */
 body {
   margin: 0;
   background: radial-gradient(ellipse at center, #1b2735 0%, #090a0f 100%);
@@ -21,15 +20,14 @@ canvas {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: transparent; /* Fonni shaffof qildik */
+  background: transparent;
 }
 
-/* Navigatsiya menyusi */
 .products-container .navigation-menu {
   position: absolute;
   z-index: 10000;
   top: 1%;
-  font-size: 25px; /* 40px juda katta edi */
+  font-size: 25px;
   font-family: monospace;
 }
 
@@ -38,7 +36,6 @@ canvas {
   font-weight: bold;
 }
 
-/* Board qismi - Shisha effekti */
 .products-container .restaurant-menu-frame .board {
   position: relative;
   margin-top: 100px;
@@ -48,14 +45,13 @@ canvas {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: rgba(17, 3, 3, 0.7); /* To'q shaffof fon */
+  background: rgba(17, 3, 3, 0.7);
   backdrop-filter: blur(10px);
   padding: 30px;
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Jadval dizayni */
 .table {
   color: white !important;
 }
@@ -75,7 +71,10 @@ canvas {
   vertical-align: middle;
 }
 
-/* Input va Form elementlari */
+/* dish-container — CSS dan display:none OLIB TASHLANDI, JS .hide() ishlatadi */
+.products-container .dish-container {
+  width: 100%;
+}
 
 .products-container .long-input {
   position: relative;
@@ -86,15 +85,13 @@ canvas {
   flex-direction: column;
 }
 
-
 .products-container .long-input label {
   font-family: "Source Serif Pro";
   font-style: normal;
-  font-weight: 400;
+  font-weight: bold;
   font-size: 16px;
   line-height: 25px;
   color: #e3c08d;
-	font-weight: bold;
 }
 
 .products-container .long-input input {
@@ -114,8 +111,6 @@ canvas {
   line-height: 26px;
   color: #4f547b;
 }
-
-
 
 .products-container .long-input textarea {
   position: relative;
@@ -141,7 +136,6 @@ canvas {
   padding: 0px 20px;
   width: 100%;
   height: 55px;
-  display: flex;
   border: none;
   background: #f7f7f7;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -165,7 +159,6 @@ canvas {
   padding: 0px 20px;
   width: 100%;
   height: 55px;
-  display: flex;
   border: none;
   background: #f7f7f7;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -190,7 +183,7 @@ canvas {
 
 .products-container .half-input-frame .half-input {
   position: relative;
-  width: 49%;
+  width: 32%;
   height: auto;
   display: flex;
   flex-direction: column;
@@ -199,10 +192,10 @@ canvas {
 .products-container .half-input label {
   font-family: "Source Serif Pro";
   font-style: normal;
-  font-weight: 400;
+  font-weight: bold;
   font-size: 16px;
   line-height: 25px;
-  color: #ffffff;
+  color: #e3c08d;
 }
 
 .products-container .half-input input {
@@ -215,6 +208,12 @@ canvas {
   background: #f7f7f7;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 5px;
+  font-family: "GT Walsheim Pro";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 26px;
+  color: #4f547b;
 }
 
 .products-container .media-frame {
@@ -236,6 +235,12 @@ canvas {
   align-items: center;
   border-radius: 10px;
   cursor: pointer;
+  border: 2px dashed rgba(227, 192, 141, 0.4);
+  transition: border-color 0.2s;
+}
+
+.products-container .media-frame .upload-img-box:hover {
+  border-color: #e3c08d;
 }
 
 .products-container .upload-img-box img {
@@ -244,6 +249,17 @@ canvas {
   height: 100%;
   display: block;
   border-radius: 10px;
+  object-fit: cover;
+}
+
+.products-container .upload-img-box input[type="file"] {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  cursor: pointer;
 }
 
 .products-container .img-frame {
@@ -257,8 +273,22 @@ canvas {
   margin-top: 30px;
   font-family: "Source Serif Pro";
   font-style: normal;
-  font-weight: 400;
+  font-weight: bold;
   font-size: 16px;
   line-height: 25px;
-  color: #ffffff;
+  color: #e3c08d;
+}
+
+.products-container .new-dish-txt {
+  color: #e3c08d;
+  font-family: "Source Serif Pro";
+  font-weight: bold;
+}
+
+.products-container .operation-buttons {
+  margin-top: 30px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
 }

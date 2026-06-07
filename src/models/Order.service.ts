@@ -22,7 +22,7 @@ class OrderService {
 	public async createOrder(member: Member, input: OrderItemInput[]): Promise<Order>{
 			const memberId = shapeIntoMongooseObjectId(member._id);
 			const amount = input.reduce((accumulator: number, item: OrderItemInput) => {
-				return accumulator + (Number(item.itemPrice) * Number(item.itemQuentity));
+				return accumulator + (Number(item.itemPrice) * Number(item.itemQuantity));
 			}, 0);
 			const delivery = amount < 100 ? 5 : 0;
 
@@ -72,7 +72,7 @@ class OrderService {
 				{$limit: inquiry.limit},
 				{
 					$lookup: {
-						from: "orderItems",
+						from: "orderitems",
 						localField: "_id",
 						foreignField: "orderId",
 						as: "orderItems",

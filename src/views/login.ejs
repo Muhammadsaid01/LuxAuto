@@ -1,0 +1,79 @@
+<%- include('includes/header') %>
+
+	<body>
+		<link rel="stylesheet" type="text/css" href="/css/log-up.css" />
+
+
+
+		<div class="form-container sign-in">
+
+			<div class="navigation-menu">
+				<ul class="nav justify-content-center">
+					<li class="nav-item">
+						<a class="nav-link active" href="/admin">Home</a>
+					</li>
+					<% if(!member) { %>
+						<li class="nav-item">
+							<a class="nav-link" href="/admin/signup">Signup</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="/admin/login">Login</a>
+						</li>
+						<% } else { %>
+							<li class="nav-item">
+								<a class="nav-link" href="/admin/product/all">Menu</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="/admin/user/all">Users</a>
+							</li>
+							<li class="nav-item" onclick="return confirm('Do you want to logout?')">
+								<a class="nav-link" href="/admin/logout">Logout</a>
+							</li>
+							<% } %>
+				</ul>
+			</div>
+			<form class="login-container" action="/admin/login" method="POST">
+
+				<h1>Log in</h1>
+
+				<span>
+					Log in to your account and seamlessly continue managing your projects.
+				</span>
+
+				<input type="text" name="memberNick" class="member-nick" placeholder="Enter your username" required />
+
+				<input type="password" name="memberPassword" class="member-password" placeholder="Enter your password"
+					required />
+
+				<a href="#">Forgot password?</a>
+
+				<button class="login-btn btn" name="login" type="submit">
+					Log in
+				</button>
+
+				<div class="social-icons">
+					<a href="#" class="icon">
+						<i class="fa-brands fa-facebook-f"></i>
+					</a>
+
+					<a href="#" class="icon">
+						<i class="fa-brands fa-google"></i>
+					</a>
+
+					<a href="#" class="icon">
+						<i class="fa-brands fa-apple"></i>
+					</a>
+				</div>
+
+				<div class="signup-text">
+					Don't have an account? <b><a href="/admin/signup">Sign up</a></b>
+				</div>
+
+			</form>
+		</div>
+
+		<script src="/js/login.js"></script>
+
+	</body>
+
+	<%- include('includes/footer') %>
