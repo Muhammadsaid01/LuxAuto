@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import Errors, { HttpCode, Message } from '../libs/Errors';
-import { MemberType } from '../libs/enums/Member.enum';
+import { MemberStatus, MemberType } from '../libs/enums/Member.enum';
 import { T } from '../libs/types/common';
 import { AdminRequest, LoginInput, MemberInput } from '../libs/types/member';
 import MemberService from '../models/Member.service';
@@ -10,10 +10,8 @@ const dealershipController: T = {};
 
 dealershipController.getHomePage = (req: Request , res: Response) => {
 	 try {
-		console.log("home page");
 		res.render("home");
 	 }catch (err) {
-		console.log("Error in getHomePage: ", err);
 		res.redirect("/admin");
 	 }
 };
@@ -21,12 +19,8 @@ dealershipController.getHomePage = (req: Request , res: Response) => {
 //Signup
 dealershipController.getSignup = (req: Request , res: Response) => {
 	 try {
-        console.log(req.body);
-        console.log(req.file);
-		console.log("signup page");
 		res.render("signup");
 	 }catch (err) {
-		console.log("Error in getSignup: ", err);
 		res.redirect("/admin");
 	 }
 };
@@ -36,7 +30,6 @@ dealershipController.getLogin = (req: Request, res:Response) => {
     try {
      res.render("login");
     } catch (err){
-        console.log("Error getLogin:" ,err);
           res.redirect('/admin'); 
     }  
 };
@@ -44,8 +37,6 @@ dealershipController.getLogin = (req: Request, res:Response) => {
 
 dealershipController.processSignup =  async(req: AdminRequest, res: Response) => {
   try {
-    console.log("processSignUp");
-    console.log("req.body:", req.body);
     const file = req.file;
    if (!file) throw new Errors (HttpCode.BAD_REQUEST, Message.SOMETHING_WENT_WRONG);
  ;
@@ -54,14 +45,13 @@ dealershipController.processSignup =  async(req: AdminRequest, res: Response) =>
     newMember.memberImage = file?.path.replace(/\\/g,"/");
     newMember.memberType = MemberType.ADMIN;
     const memberService = new MemberService();
-     const result =   await memberService.processSignup(newMember);
+     const result =   await memberService.processSignup(newMember, file.path.replace(/\\/g, "/"));
 
  req.session.member = result ;
  req.session.save(function() {
   res.redirect("/admin/product/all");
  });
   } catch (err) {
-    console.log("Error, processSignUp:", err);
     const message =
       err instanceof Errors ? err.message : Message.SOMETHING_WENT_WRONG;
     res.send(`<script>alert("${message}"); window.location.replace('/admin/signup');</script>`);
@@ -71,7 +61,6 @@ dealershipController.processSignup =  async(req: AdminRequest, res: Response) =>
 // Process Login
 dealershipController.processLogin = async (req: AdminRequest, res:Response) => {
     try {
-        console.log("processLogin");
         const input: LoginInput = req.body;
         const result = await memberService.processLogin(input);
 
@@ -83,7 +72,6 @@ dealershipController.processLogin = async (req: AdminRequest, res:Response) => {
        });
         
     } catch (err){
-        console.log("Error processLogin:" ,err);
         const message =
          err instanceof Errors ? err.message : Message.SOMETHING_WENT_WRONG;
          res.send(`<script>alert('${message}'); window.location.replace('/admin/login');</script>`);
@@ -91,13 +79,11 @@ dealershipController.processLogin = async (req: AdminRequest, res:Response) => {
 };
 dealershipController.logout = async (req: AdminRequest, res:Response) => {
     try {
-        console.log("logout");
        req.session.destroy(function(){
         res.redirect('/admin');   
 
        });
     } catch (err){
-        console.log("Error logout:" ,err);
         res.redirect('/admin'); 
     }  
 };
@@ -105,11 +91,9 @@ dealershipController.logout = async (req: AdminRequest, res:Response) => {
 //Users
 dealershipController.getUsers= async (req: Request, res:Response) => {
     try {
-        console.log("getUsers");
         const result = await memberService.getUsers();
         res.render("users", {users: result});
     } catch (err){
-        console.log("Error getUsers:" ,err);
           res.redirect('/admin/login'); 
     }  
 };
@@ -118,12 +102,9 @@ dealershipController.getUsers= async (req: Request, res:Response) => {
 
 dealershipController.updateChosenUser = async (req: Request, res:Response) => {
     try {
-     console.log("updateChosenUser");
      const result = await memberService.updateChosenUser(req.body);
-     console.log(result);
      res.status(HttpCode.OK).json({data: result});
     } catch (err){
-        console.log("Error updateChosenUser:" ,err);
         if (err instanceof Errors) res.status(err.code).json(err);
         else res.status(Errors.standard.code).json(Errors.standard);
        
@@ -137,25 +118,29 @@ dealershipController.checkMe = async (
      res:Response
     ) => {
     try {
-        console.log("checkMe");
        if (req.session?.member) res.send(`Hi, ${req.session.member.memberNick}`);
        else res.send(`<script>alert('${Message.NOT_AUTHENTICATED}');</script>`);
     } catch (err){
-        console.log("Error checkMe:" ,err);
         res.send(err);
     }  
 };
 
 
-dealershipController.verifyAdmin = (
+dealershipController.verifyAdmin = async (
     req: AdminRequest,
     res:Response,
     next: NextFunction
 ) => {
  
         if(req.session?.member?.memberType===MemberType.ADMIN){
-            req.member = req.session.member;
-            next();
+            try {
+              const current = await memberService.getMemberDetail(req.session.member);
+              if (current.memberType !== MemberType.ADMIN || current.memberStatus !== MemberStatus.ACTIVE) throw new Error();
+              req.member = current;
+              next();
+            } catch {
+              res.redirect("/admin/login");
+            }
         }else{
             const message = Message.NOT_AUTHENTICATED;
         res.send(`<script>alert('${message}'); window.location.replace('/admin/login');</script>`

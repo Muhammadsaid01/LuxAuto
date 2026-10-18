@@ -26,34 +26,30 @@ class ProductService {
 
 	/* SPA */
 
-  public async getProducts(inquery: ProductInquery) :  Promise<Product[]> {
-    const match:T = {productStatus: ProductStatus.ACTIVE};
-    if(inquery.productCollection)
-      match.productCollection = inquery.productCollection;
-    if(inquery.search){
-      match.productName = {$regex: new RegExp(inquery.search, "i") }
-    };
-    const sort:T = inquery.order === "productPrice" 
-    ? {[inquery.order]: 1} 
-    : {[inquery.order]: -1};
-
-    const result  = await this.productModel.aggregate([
-      {$match: match},
-      {$sort: sort},
-       {$skip: (inquery.page - 1) * inquery.limit},
-       {$limit: inquery.limit },
+  public async getProducts(inquiry: ProductInquery): Promise<{ products: Product[]; total: number }> {
+    if (!Number.isInteger(inquiry.page) || inquiry.page < 1 || !Number.isInteger(inquiry.limit) || inquiry.limit < 1 || inquiry.limit > 100) {
+      throw new Errors(HttpCode.BAD_REQUEST, Message.SOMETHING_WENT_WRONG);
+    }
+    const match: T = { productStatus: ProductStatus.ACTIVE };
+    if (inquiry.productCollection) match.productCollection = inquiry.productCollection;
+    if (inquiry.search) match.productName = { $regex: inquiry.search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), $options: "i" };
+    const field = ["createdAt", "productPrice", "productViews"].includes(inquiry.order) ? inquiry.order : "createdAt";
+    const [result] = await this.productModel.aggregate([
+      { $match: match },
+      { $facet: {
+        products: [{ $sort: { [field]: field === "productPrice" ? 1 : -1, _id: 1 } },
+          { $skip: (inquiry.page - 1) * inquiry.limit }, { $limit: inquiry.limit }],
+        count: [{ $count: "total" }],
+      } },
     ]).exec();
-
-    if(!result) throw new Errors(HttpCode.NOT_FOUND, Message.NOT_FOUND);
-
-    return result;
+    return { products: result.products, total: result.count[0]?.total ?? 0 };
   }
 
   public async getProduct(memberId: ObjectId | null , id : string): Promise<Product> {
 
     const productId = shapeIntoMongooseObjectId(id);
 
-    let result = await this.productModel.findOne({_id: productId, productStatus​ : ProductStatus.ACTIVE}).exec();
+    let result = await this.productModel.findOne({_id: productId, productStatus : ProductStatus.ACTIVE}).exec();
 
      if(!result) throw new Errors(HttpCode.NOT_FOUND, Message.NOT_FOUND);
     if(memberId) {

@@ -1,3 +1,4 @@
+import { signupFields, profileFields } from "../libs/utils/member-input";
 import bcrypt from 'bcryptjs';
 import { shapeIntoMongooseObjectId } from '../libs/config';
 import { MemberStatus, MemberType } from '../libs/enums/Member.enum';
@@ -15,18 +16,19 @@ class MemberService {
 	}
 
 /** BSSR */
- public async processSignup(input: MemberInput): Promise<Member> {
+ public async processSignup(input: MemberInput, uploadedImage?: string): Promise<Member> {
     const exist = await this.memberModel
       .findOne({ memberType: MemberType.ADMIN })
       .exec();
 
     if (exist) throw new Errors(HttpCode.BAD_REQUEST, Message.CREATED_FAILED);
 
+    const fields = signupFields(input as unknown as Record<string, unknown>);
     const salt = await bcrypt.genSalt();
-    input.memberPassword = await bcrypt.hash(input.memberPassword, salt);
+    fields.memberPassword = await bcrypt.hash(fields.memberPassword, salt);
 
     try {
-      const result = await this.memberModel.create(input);
+      const result = await this.memberModel.create({ ...fields, memberType: MemberType.ADMIN, memberStatus: MemberStatus.ACTIVE, memberPoints: 0, memberImage: uploadedImage });
       result.memberPassword = "";
       return result.toObject()  as Member;
     } catch (err) {
@@ -37,7 +39,7 @@ class MemberService {
 	 public async processLogin(input: LoginInput): Promise<Member> {
     const member = await this.memberModel
       .findOne(
-        { memberNick: input.memberNick, memberType: MemberType.ADMIN },
+        { memberNick: input.memberNick, memberType: MemberType.ADMIN, memberStatus: MemberStatus.ACTIVE },
         { memberNick: 1, memberPassword: 1 },
       )
       .exec();
@@ -63,7 +65,7 @@ class MemberService {
   }
 	  public async updateChosenUser(input: MemberUpdateInput): Promise<Member> {
     const memberId = shapeIntoMongooseObjectId(input._id);
-    const result = await this.memberModel.findByIdAndUpdate({_id: memberId}, input, {new: true, runValidators: true}).exec();
+    const result = await this.memberModel.findByIdAndUpdate({_id: memberId}, {$set: {memberStatus: input.memberStatus}}, {new: true, runValidators: true}).exec();
 
     if (!result) throw new Errors(HttpCode.NOT_MODIFIED, Message.UPDATE_FAILED);
 // @ts-ignore
@@ -84,16 +86,17 @@ public async  getAdmin(): Promise<Member> {
 
   public async signup(input: MemberInput): Promise<Member> {
     //* Password hashing
+    const fields = signupFields(input as unknown as Record<string, unknown>);
     const salt = await bcrypt.genSalt();
-    input.memberPassword = await bcrypt.hash(input.memberPassword, salt);
+    fields.memberPassword = await bcrypt.hash(fields.memberPassword, salt);
 
     try {
-      const result = await this.memberModel.create(input);
+      const result = await this.memberModel.create({ ...fields, memberType: MemberType.USER, memberStatus: MemberStatus.ACTIVE, memberPoints: 0 });
       result.memberPassword = "";
 //@ts-ignore
       return result.toJSON();
     } catch (err) {
-      console.error("Error, model:signup", err);
+
       throw new Errors(HttpCode.BAD_REQUEST, Message.USED_NICK_PHONE);
     }
   }
@@ -138,10 +141,20 @@ public async  getAdmin(): Promise<Member> {
 
   public async updateMember(
     member:Member,
-    input:MemberUpdateInput
+    input:MemberUpdateInput,
+    uploadedImage?: string
   ): Promise<Member> {
     const memberId = shapeIntoMongooseObjectId(member._id);
-    const result = await this.memberModel.findOneAndUpdate({_id: memberId}, input, {new:true}).exec();
+    const fields = profileFields(input as unknown as Record<string, unknown>);
+    if (uploadedImage) fields.memberImage = uploadedImage;
+    const result = await this.memberModel.findOneAndUpdate(
+      {_id: memberId, memberStatus: MemberStatus.ACTIVE}, {$set: fields}, {new:true, runValidators: true}
+    ).exec().catch((err: unknown) => {
+      if ((err as { code?: number }).code === 11000) {
+        throw new Errors(HttpCode.BAD_REQUEST, Message.USED_NICK_PHONE);
+      }
+      throw err;
+    });
     if(!result) throw new Errors(HttpCode.NOT_MODIFIED, Message.UPDATE_FAILED);
 // @ts-ignore
     return result;

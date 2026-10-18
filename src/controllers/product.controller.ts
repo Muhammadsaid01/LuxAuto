@@ -29,7 +29,8 @@ const productController: T = {};
 		const result = await productService.getProducts(inquery);
 		
 
-		res.status(HttpCode.OK).json(result);
+		res.setHeader("X-Total-Count", String(result.total));
+		res.status(HttpCode.OK).json(result.products);
 	}catch(err){
 		console.log("Error GetProducts:", err);
 		if (err instanceof Errors) res.status(err.code).json(err);
@@ -74,7 +75,6 @@ productController.getAllProducts = async (req:Request, res:Response)=> {
 
 productController.createNewProduct = async (req:AdminRequest, res:Response)=> {
 	try{
-		console.log("BODY =>", req.body);
 		console.log("Create New Products");
 		console.log("req.file:", req.files);
 
