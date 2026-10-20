@@ -18,7 +18,7 @@ Provision a separate local development replica set rather than modifying product
 
 ## Cookies and frontend
 
-The current local deployment is frontend `http://localhost:3000`, API
+The current local deployment is frontend `http://localhost:3001`, API
 `http://localhost:3004`: `HttpOnly`, `SameSite=Lax`, `Secure=false`, host-only cookies.
 Use `NODE_ENV=production` for HTTPS deployment (`Secure=true` by default), and
 configure `FRONTEND_ORIGIN` to the frontend's exact origin. An explicit
@@ -97,3 +97,32 @@ rebuild/reload a statically served frontend after frontend changes.
 
 The catalog keeps its array response and exposes matching totals in
 `X-Total-Count`, including that header in CORS exposed headers.
+
+
+## Paired local startup (verified 2026-10-19)
+
+Run `npm run start:local` in this backend and in `../car-react2`, in separate
+terminals. The frontend pins PORT=3001 and the backend preset supplies the exact
+`FRONTEND_ORIGIN=http://localhost:3001`. API PORT remains 3004 from the existing
+configuration. No `.env` files are overwritten; the preset does not replace
+MONGO_URL or the authentication/session secrets. Do not use it as a production
+start command. Plain `npm run start:dev` / `npm start` keep their existing
+configuration behavior (including the 3000 CORS fallback when unset).
+
+Port 3000 was occupied by another service and CRA selected 3001, while the API
+still sent ACAO `http://localhost:3000`. This caused browser CORS failures even
+though GET `/product/all` returned 200 and a nonzero X-Total-Count; signup's
+OPTIONS returned 204 with a mismatched origin, and cross-origin POSTs were also
+rejected by the existing origin guard. The fix changes the runtime configuration,
+not the CORS/CSRF/authentication protections. Do not add wildcard credentialed
+CORS. If choosing another frontend port, use
+`FRONTEND_ORIGIN=http://localhost:<port> npm run start:dev` and configure the
+frontend's PORT/API URL consistently. Do not accept an automatic CRA port change
+without making that matching API change. Restart both dev processes after their
+respective environment changes; rebuild a static frontend after API URL changes.
+
+Local HTTP uses HttpOnly, SameSite=Lax, Secure=false (the existing development
+default). Preserve HTTPS production settings. A MongoDB replica set is required
+for order transactions; signup and catalog do not themselves require transactions.
+A connection error is different from an empty database: check HTTP status, CORS,
+JSON array and X-Total-Count. Also check DevTools is not emulating Offline mode.

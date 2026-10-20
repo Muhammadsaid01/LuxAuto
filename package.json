@@ -5,6 +5,7 @@
   "main": "dist/server.js",
   "scripts": {
     "start:dev": "nodemon --exec ts-node src/server.ts",
+    "start:local": "FRONTEND_ORIGIN=http://localhost:3001 npm run start:dev",
     "build": "tsc && node scripts/copy-assets.cjs",
     "start": "node dist/server.js",
     "task": "nodemon train.js",
