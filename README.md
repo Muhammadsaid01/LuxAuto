@@ -48,16 +48,12 @@ PROCESS -> FINISH. Repeating the same completed transition is idempotent.
 Status changes and confirmation points commit in one transaction, so concurrent
 requests/retries award at most once. Existing orders/points are not migrated.
 
-## Regression tests
+## Automated-test cleanup
 
-`npm test` builds the backend and runs Node's test runner. Requirements: Node 20+
-and a local `mongod` executable (or set `MONGOD_BIN`). Tests start a temporary
-single-node replica set on a random loopback port, use a separate database and
-random test-only credentials, and remove their files/processes afterwards.
-They never connect to the application's MONGO_URL, and need permission to bind
-loopback sockets. Coverage includes field injection, account revocation, cookies,
-real multipart uploads, database pricing, unavailable products, rollback,
-concurrent transitions, and the built production HTTP server/admin assets.
+Dedicated automated tests are no longer present. The stale `npm test` script
+was removed during the 2026-10-20 cleanup. Application validation, authentication, transactions, and
+security middleware remain in place. No tests, builds, TypeScript, lint, or
+runtime checks were performed for this cleanup.
 
 Payment is still a status confirmation without a payment provider. The frontend
 contact form still has no contact service; neither was implemented in this change.
@@ -84,8 +80,6 @@ in the backend `.env` (the set name and port must match). Wait for
 `mongosh 'mongodb://127.0.0.1:27027/?directConnection=true' --eval 'db.hello().isWritablePrimary'`
 to report `true`, then run the backend from its project directory after creating
 `uploads/members` and `uploads/products`. This local setup binds only to loopback.
-`npm test` provisions and removes its own isolated replica set automatically;
-it does not need this development database.
 
 The React app and API must use the same hostname for the current SameSite=Lax
 cookie setup: use both `localhost` or both `127.0.0.1`. If port 3000 is occupied,
